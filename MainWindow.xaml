@@ -1,0 +1,349 @@
+﻿<Window x:Class="Password_Manager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:local="clr-namespace:Password_Manager"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        Topmost="True"
+        x:Name="Main">
+    <Viewbox Stretch="Fill" StretchDirection="Both">
+        <Grid >
+            <Grid.Background>
+                <ImageBrush ImageSource="/images.png"/>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Popup x:Name="Bound" Height="1" Width="1" Placement="AbsolutePoint">
+                <Grid/>
+            </Popup>
+            <Menu Height="50" VerticalAlignment="Top" Grid.ColumnSpan="8">
+                <Menu.Background>
+                    <ImageBrush ImageSource="/sea-edge-79ab30e2.png"/>
+                </Menu.Background>
+                <MenuItem Header="Media Viewer" Background="{x:Null}" FontSize="23">
+                    <MenuItem x:Name="FullScreen" Header="Full Screen" Click="FullScreen_Click">
+                        <MenuItem.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF9FD0E0"/>
+                                <GradientStop Color="#FF3486DE" Offset="1"/>
+                            </LinearGradientBrush>
+                        </MenuItem.Background>
+                    </MenuItem>
+                    <MenuItem x:Name="MiniScreen" Header="Mini Player" Click="MiniScreen_Click">
+                        <MenuItem.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF3486DE"/>
+                                <GradientStop Color="#FF6D2779" Offset="1"/>
+                            </LinearGradientBrush>
+                        </MenuItem.Background>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Video Games" Background="{x:Null}" FontSize="23">
+                    <MenuItem x:Name="Fav" Header="Favorite" Click="Fav_Click"/>
+                    <MenuItem x:Name="Steam" Header="Steam" Click="Steam_Click"/>
+                    <MenuItem x:Name="Epic" Header="Epic" Click="Epic_Click"/>
+                    <MenuItem x:Name="Blizz" Header="Blizzard" Click="Blizz_Click"/>
+                </MenuItem>
+                <MenuItem x:Name="Password" Header="Manage Passwords" Background="{x:Null}" FontSize="23" Click="Password_Click">
+                    <MenuItem.BorderBrush>
+                        <ImageBrush/>
+                    </MenuItem.BorderBrush>
+                </MenuItem>
+                <MenuItem Header="Task Manager" Background="{x:Null}" FontSize="23"/>
+                <MenuItem x:Name="Tasked" Header="Reminders" Background="{x:Null}" FontSize="23" Click="Tasked_Click"/>
+            </Menu>
+            <GroupBox x:Name="FullScreen1"  Grid.Row="1" Grid.ColumnSpan="8" BorderBrush="{x:Null}" Foreground="{x:Null}" BorderThickness="0" Visibility="Collapsed">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="698"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="Back" Grid.Column="0" BorderBrush="{x:Null}" Foreground="{x:Null}" RenderTransformOrigin="0.5,0.5" Click="Back_Click">
+                        <Button.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="-1"/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Button.RenderTransform>
+                        <Button.Background>
+                            <ImageBrush ImageSource="/580b57fcd9996e24bc43c448.png" Stretch="UniformToFill"/>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="Forward" Grid.Column="2" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="Forward_Click">
+                        <Button.Background>
+                            <ImageBrush ImageSource="/580b57fcd9996e24bc43c448.png" Stretch="UniformToFill"/>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="Home" Grid.Column="1" BorderBrush="{x:Null}" Foreground="{x:Null}"  Click="Home_Click">
+                        <Button.Background>
+                            <ImageBrush ImageSource="/Home.png" Stretch="UniformToFill"/>
+                        </Button.Background>
+                    </Button>
+                    <TextBox x:Name="URL" Text="URL: " Grid.Column="3" FontSize="16" FontWeight="Bold" Foreground="#FF4EFF00" FontFamily="Arial Narrow" TextDecorations="Underline" Background="{x:Null}" KeyUp="URL_KeyUp" BorderBrush="{x:Null}"/>
+                </Grid>
+            </GroupBox>
+            <DockPanel x:Name="FullScreen2" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="8" Grid.RowSpan="8" Visibility="Collapsed">
+                <wv2:WebView2 Name="webViewFull" Source="https://www.youtube.com/" WebMessageReceived="webView_WebMessageReceived"/>
+            </DockPanel>
+            <Popup x:Name="Mini" Placement="Right">
+                <Grid Height="300" Width="450">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="280"/>
+                    </Grid.RowDefinitions>
+                    <Thumb Height="20" Width="500" Grid.Row="0" DragDelta="Thumb_DragDelta"/>
+                    <wv2:WebView2 Name="webViewMini" Source="https://www.youtube.com/" WebMessageReceived="webView_WebMessageReceived" Grid.Row="1"/>
+                </Grid>
+            </Popup>
+            <Popup x:Name="PassEnter" Placement="AbsolutePoint" Height="40" Width="300">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Enter Password" Grid.Row="0" Foreground="Yellow" TextAlignment="Center"/>
+                    <TextBox x:Name="PasswordReturn" Grid.Row="1" KeyUp="PasswordReturn_KeyUp"/>
+                </Grid>
+            </Popup>
+            <DataGrid x:Name="Secret" Grid.Row="1" Grid.ColumnSpan="8" Grid.RowSpan="9" Background="Black" Foreground="Yellow" DataContext="{Binding Source=list}" Visibility="Collapsed">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="UserNames" Binding="{Binding Userd}"/>
+                    <DataGridTextColumn Header="PassWords" Binding="{Binding Passd}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <ListBox x:Name="GamesShowCase" Height="450" Width="800" DataContext="{Binding}" MouseDoubleClick="GamesShowCase_MouseDoubleClick" Grid.Row="1" Grid.RowSpan="9" Grid.ColumnSpan="8" BorderBrush="{x:Null}" HorizontalContentAlignment="Center" Visibility="Collapsed">
+                <ListBox.Background>
+                    <ImageBrush ImageSource="/battlefrontImage3.jpg"/>
+                </ListBox.Background>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="5" Rows="20"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="BorderBrush" Value="#FF42FF00" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="AddFav" Header="Add to Favorites" Click="AddFav_Click"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}" Grid.Column="0" TextAlignment="Center" FontSize="20" FontWeight="Bold">
+                                <TextBlock.Foreground>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF00FFA7"/>
+                                        <GradientStop Color="Red" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </TextBlock.Foreground>
+                            </TextBlock>
+                            <Image x:Name="Pic" Source="{Binding MainPng}" Grid.Column="0" Grid.Row="1"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <DataGrid Name="DG" ItemsSource="{Binding}" AutoGenerateColumns="False" Grid.Row="1" Foreground="Black" RowBackground="{x:Null}" HorizontalScrollBarVisibility="Disabled" Grid.RowSpan="9" Grid.ColumnSpan="8" Visibility="Collapsed">
+                <DataGrid.Resources>
+                    <Style x:Key="DataGridTextColumnEditingStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                        <Setter Property="Background" Value="Black"/>
+                        <Setter Property="Foreground" Value="Yellow"/>
+                    </Style>
+                    <Style TargetType="ScrollBar">
+                        <Setter Property="Background" Value="Black" />
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Background>
+                    <ImageBrush ImageSource="/images.png"/>
+                </DataGrid.Background>
+                <DataGrid.Columns>
+                    <DataGridTextColumn IsReadOnly="True" Header="Password" Width="250" Binding="{Binding UserN}" Foreground="Yellow" EditingElementStyle="{StaticResource DataGridTextColumnEditingStyle}"/>
+                    <DataGridTextColumn IsReadOnly="True" Header="Site" Width="250" Binding="{Binding UserP}" Foreground="Yellow" EditingElementStyle="{StaticResource DataGridTextColumnEditingStyle}"/>
+                    <DataGridTextColumn IsReadOnly="True" Header="Email" Width="292.5" Binding="{Binding UserE}" Foreground="Yellow" EditingElementStyle="{StaticResource DataGridTextColumnEditingStyle}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid x:Name="Tasks" Grid.Row="1" Grid.ColumnSpan="8" Grid.RowSpan="9" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="250"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Calendar x:Name="Cal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed">
+                    <Calendar.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1.117" ScaleY="1.052"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Calendar.RenderTransform>
+                </Calendar>
+                <TextBox x:Name="Stat"  Text="Status Of Current Task: _________" FontSize="20" TextAlignment="Center" Grid.Column="1" Grid.Row="2" Visibility="Collapsed"/>
+                <ListBox x:Name="selector" Grid.Row="1" DataContext="{Binding}" MouseDoubleClick="ListBox_MouseDoubleClick" Grid.Column="0" Grid.RowSpan="2" Visibility="Collapsed">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Delete Item" Click="MenuItem_Click"/>
+                            <MenuItem Header="Edit Item" Click="MenuItem_Click_1"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="60" Width="150">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="20"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="35"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="Task" Height="50" Width="150" Grid.Row="0" Grid.Column="0" FontSize="8"/>
+                                <TextBox Text="Date" Height="40" Width="150" Grid.Row="1" Grid.Column="0" FontSize="8"/>
+                                <TextBox Text="Priority" Height="20" Width="150" Grid.Row="2" Grid.Column="0" FontSize="8"/>
+                                <TextBox x:Name="SelectorName" Text="{Binding TaskName}" Height="50" Width="115" Grid.Row="0" Grid.Column="1" FontSize="8"/>
+                                <TextBox x:Name="SelectorDate" Text="{Binding Date}" Height="40" Width="115" Grid.Row="1" Grid.Column="1" FontSize="8"/>
+                                <TextBox x:Name="SelectorPriority" Text="{Binding Priority}" Height="20" Width="115" Grid.Row="2" Grid.Column="1" FontSize="8"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <GroupBox x:Name="Newer" Header="Submit New Task Data" Grid.Column="1" Visibility="Collapsed">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="500"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="Submit" Content="Click to Submit" Grid.Column="1" Click="Submit_Click"/>
+                        <TabControl>
+                            <TabItem Header="Task Name">
+                                <Grid Background="#FFE5E5E5">
+                                    <TextBox x:Name="NewTaskName" Text="Enter Name Here"/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Date to Complete">
+                                <Grid Background="#FFE5E5E5">
+                                    <DatePicker x:Name="NewTaskDate"/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Task Information">
+                                <Grid Background="#FFE5E5E5">
+                                    <TextBox x:Name="NewTaskInfo" Text="Enter Info Here"/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Assigned By">
+                                <Grid Background="#FFE5E5E5">
+                                    <TextBox x:Name="NewTaskAssignment" Text="Enter Other Person's Name Here"/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Priority">
+                                <Grid Background="#FFE5E5E5">
+                                    <ComboBox x:Name="NewTaskPriority">
+                                        <ComboBoxItem Content="0"/>
+                                        <ComboBoxItem Content="1"/>
+                                        <ComboBoxItem Content="2"/>
+                                        <ComboBoxItem Content="3"/>
+                                        <ComboBoxItem Content="4"/>
+                                        <ComboBoxItem Content="5"/>
+                                    </ComboBox>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Status">
+                                <Grid Background="#FFE5E5E5">
+                                    <ComboBox x:Name="NewTaskStatus">
+                                        <ComboBoxItem Content="Havent Started"/>
+                                        <ComboBoxItem Content="In Progress"/>
+                                        <ComboBoxItem Content="Waiting"/>
+                                        <ComboBoxItem Content="Finished"/>
+                                    </ComboBox>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                </GroupBox>
+                <GroupBox x:Name="Curr" Grid.Column="1" Header="Selected Task Info" Grid.Row="1" Visibility="Collapsed">
+                    <Grid>
+                        <TabControl>
+                            <TabItem Header="Task Name">
+                                <Grid Background="#FFE5E5E5">
+                                    <TextBox x:Name="CurrentTaskName" Text=""/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Date to Complete">
+                                <Grid Background="#FFE5E5E5">
+                                    <TextBox x:Name="CurrentTaskDate" Text=""/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Task Information">
+                                <Grid Background="#FFE5E5E5">
+                                    <TextBox x:Name="CurrentTaskInfo" Text=""/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Assigned By">
+                                <Grid Background="#FFE5E5E5">
+                                    <TextBox x:Name="CurrentAssignedBy" Text=""/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Priority">
+                                <Grid Background="#FFE5E5E5">
+                                    <TextBox x:Name="CurrentPriority" Text=""/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Time Left">
+                                <StackPanel>
+                                    <TextBox x:Name="DaysLeft" Height="50" Text="Days Remaining:" FontSize="35"/>
+                                    <TextBox x:Name="HoursLeft" Height="50" Text="Hours Remaining:" FontSize="35"/>
+                                    <TextBox x:Name="MinutesLeft" Height="50" Text="Minutes Remaining:" FontSize="35"/>
+                                    <TextBox x:Name="SecondsLeft" Height="50" Text="Seconds Remaining:" FontSize="35"/>
+                                </StackPanel>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                </GroupBox>
+                <!--<PasswordBox HorizontalAlignment="Left"  VerticalAlignment="Top" Background="Black" Foreground="Yellow" Password="" />-->
+            </Grid>
+        </Grid>
+    </Viewbox>
+</Window>
